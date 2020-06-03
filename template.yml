@@ -52,3 +52,32 @@ Resources:
             QueueName: !GetAtt MyQueue.QueueName
         # Give Lambda basic execution Permission to the helloFromLambda
         - AWSLambdaBasicExecutionRole
+
+
+#to add dynamodb table copied from aws guide
+Resources:
+  ddbTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  helloFromLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/hello-from-lambda.helloFromLambdaHandler
+      Runtime: nodejs10.x
+      MemorySize: 128
+      Timeout: 60
+      Description: A Lambda function that returns a static string.
+      Environment:
+        Variables:
+          DDB_TABLE: !Ref ddbTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ddbTable
+        - AWSLambdaBasicExecutionRole
