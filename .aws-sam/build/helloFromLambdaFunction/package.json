@@ -3,7 +3,8 @@
     "description": "serverless",
     "version": "0.0.1",
     "private": true,
-    "dependencies": {},
+    "dependencies": {
+    },
     "devDependencies": {
         "jest": "^24.7.1"
     },
